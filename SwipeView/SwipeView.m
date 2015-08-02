@@ -61,6 +61,7 @@
 - (void)swipeViewDidEndScrollingAnimation:(__unused SwipeView *)swipeView {}
 - (BOOL)swipeView:(__unused SwipeView *)swipeView shouldSelectItemAtIndex:(__unused NSInteger)index { return YES; }
 - (void)swipeView:(__unused SwipeView *)swipeView didSelectItemAtIndex:(__unused NSInteger)index {}
+- (void)swipeViewHandleRefresh:(__unused SwipeView *)swipeView {}
 
 @end
 
@@ -102,6 +103,7 @@
     _truncateFinalPage = NO;
     _defersItemViewLoading = NO;
     _vertical = NO;
+    _pullToRefresh = NO;
     
     _scrollView = [[UIScrollView alloc] init];
     _scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
@@ -131,6 +133,12 @@
     tapGesture.delegate = self;
     [_scrollView addGestureRecognizer:tapGesture];
     
+    if(_pullToRefresh){
+        UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+        refreshControl.tintColor = [UIColor grayColor];
+        [refreshControl addTarget:self action:@selector(didPullToRefresh:) forControlEvents:UIControlEventValueChanged];
+        [_scrollView addSubview:refreshControl];
+    }
     self.clipsToBounds = YES;
     
     //place scrollview at bottom of hierarchy
@@ -1129,6 +1137,12 @@
     {
         [_delegate swipeView:self didSelectItemAtIndex:index];
     }
+}
+
+- (void)didPullToRefresh:(UIRefreshControl *)refreshControl
+{
+    
+    [_delegate swipeViewHandleRefresh:self];
 }
 
 

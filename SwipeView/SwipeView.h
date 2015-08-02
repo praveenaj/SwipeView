@@ -85,6 +85,7 @@ typedef NS_ENUM(NSUInteger, SwipeViewAlignment)
 @property (nonatomic, readonly, getter = isScrolling) BOOL scrolling;
 @property (nonatomic, assign) BOOL defersItemViewLoading;
 @property (nonatomic, assign, getter = isVertical) BOOL vertical;
+@property (nonatomic, assign) BOOL pullToRefresh;
 
 - (void)reloadData;
 - (void)reloadItemAtIndex:(NSInteger)index;
@@ -121,6 +122,7 @@ typedef NS_ENUM(NSUInteger, SwipeViewAlignment)
 - (void)swipeViewDidEndScrollingAnimation:(SwipeView *)swipeView;
 - (BOOL)swipeView:(SwipeView *)swipeView shouldSelectItemAtIndex:(NSInteger)index;
 - (void)swipeView:(SwipeView *)swipeView didSelectItemAtIndex:(NSInteger)index;
+- (void)swipeViewHandleRefresh:(SwipeView *)swipeView;
 
 @end
 
