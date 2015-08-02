@@ -52,6 +52,8 @@
     
     //configure swipeView
     _swipeView.pagingEnabled = YES;
+    _swipeView.pullToRefresh = YES; // Adds UIRefreshControl
+    _swipeView.vertical = YES; // Must be vertical for UIRefreshControl to work
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -117,6 +119,24 @@
 - (CGSize)swipeViewItemSize:(SwipeView *)swipeView
 {
     return self.swipeView.bounds.size;
+}
+
+/* Handler for UIRefreshControl */
+
+-(void)swipeViewHandleRefresh:(SwipeView *)swipeView{
+    
+    // Simulate network call delay
+    double delayInSeconds = 2;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    //execute the code after .5 seconds
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        
+        //once all the data has been fetched
+        //we should end the refresh animation by
+        //calling the endRefreshing Method of UIRefreshControl
+        [_swipeView.refreshControl endRefreshing];
+        
+    });
 }
 
 @end

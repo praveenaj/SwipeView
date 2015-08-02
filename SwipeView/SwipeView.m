@@ -133,12 +133,6 @@
     tapGesture.delegate = self;
     [_scrollView addGestureRecognizer:tapGesture];
     
-    if(_pullToRefresh){
-        UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
-        refreshControl.tintColor = [UIColor grayColor];
-        [refreshControl addTarget:self action:@selector(didPullToRefresh:) forControlEvents:UIControlEventValueChanged];
-        [_scrollView addSubview:refreshControl];
-    }
     self.clipsToBounds = YES;
     
     //place scrollview at bottom of hierarchy
@@ -296,6 +290,19 @@
         _scrollView.alwaysBounceHorizontal = !_vertical && _bounces;
         _scrollView.alwaysBounceVertical = _vertical && _bounces;
         [self setNeedsLayout];
+    }
+}
+
+- (void)setPullToRefresh:(BOOL)pullToRefresh
+{
+    if (_pullToRefresh != pullToRefresh)
+    {
+        _pullToRefresh = pullToRefresh;
+        
+        _refreshControl = [[UIRefreshControl alloc] init];
+        _refreshControl.tintColor = [UIColor grayColor];
+        [_refreshControl addTarget:self action:@selector(didPullToRefresh:) forControlEvents:UIControlEventValueChanged];
+        [_scrollView addSubview:_refreshControl];
     }
 }
 
