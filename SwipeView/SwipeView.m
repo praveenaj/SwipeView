@@ -303,9 +303,7 @@
         
         _refreshControl = [[UIRefreshControl alloc] init];
         _refreshControl.tintColor = [UIColor grayColor];
-        [_refreshControl addTarget:self action:@selector(willPullToRefresh:) forControlEvents:UIControlEventTouchDragEnter];
-        [_refreshControl addTarget:self action:@selector(isPullingToRefresh:) forControlEvents:UIControlEventValueChanged];
-        [_refreshControl addTarget:self action:@selector(didPullToRefresh::) forControlEvents:UIControlEventTouchDragExit];
+        [_refreshControl addTarget:self action:@selector(didPullToRefresh:) forControlEvents:UIControlEventValueChanged];
         [_scrollView addSubview:_refreshControl];
     }
 }
@@ -1150,22 +1148,10 @@
     }
 }
 
-- (void)isPullingToRefresh:(UIRefreshControl *)refreshControl
-{
-    
-    [_delegate swipeViewHandleRefresh:self];
-}
-
-- (void)willPullToRefresh:(UIRefreshControl *)refreshControl
-{
-    
-    [_delegate swipeViewWillBeginRefreshing:self];
-}
-
 - (void)didPullToRefresh:(UIRefreshControl *)refreshControl
 {
     
-    [_delegate swipeViewDidEndRefreshing:self];
+    [_delegate swipeViewHandleRefresh:self];
 }
 
 #pragma mark -
