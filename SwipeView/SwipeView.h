@@ -123,7 +123,8 @@ typedef NS_ENUM(NSUInteger, SwipeViewAlignment)
 - (BOOL)swipeView:(SwipeView *)swipeView shouldSelectItemAtIndex:(NSInteger)index;
 - (void)swipeView:(SwipeView *)swipeView didSelectItemAtIndex:(NSInteger)index;
 - (void)swipeViewHandleRefresh:(SwipeView *)swipeView;
-
+- (void)swipeViewWillBeginRefreshing:(SwipeView *)swipeView;
+- (void)swipeViewDidEndRefreshing:(SwipeView *)swipeView;
 @end
 
 

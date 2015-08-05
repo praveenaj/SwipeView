@@ -62,6 +62,8 @@
 - (BOOL)swipeView:(__unused SwipeView *)swipeView shouldSelectItemAtIndex:(__unused NSInteger)index { return YES; }
 - (void)swipeView:(__unused SwipeView *)swipeView didSelectItemAtIndex:(__unused NSInteger)index {}
 - (void)swipeViewHandleRefresh:(__unused SwipeView *)swipeView {}
+- (void)swipeViewWillBeginRefreshing:(__unused SwipeView *)swipeView {}
+- (void)swipeViewDidEndRefreshing:(__unused SwipeView *)swipeView {}
 
 @end
 
@@ -301,7 +303,9 @@
         
         _refreshControl = [[UIRefreshControl alloc] init];
         _refreshControl.tintColor = [UIColor grayColor];
-        [_refreshControl addTarget:self action:@selector(didPullToRefresh:) forControlEvents:UIControlEventValueChanged];
+        [_refreshControl addTarget:self action:@selector(willPullToRefresh:) forControlEvents:UIControlEventTouchDragEnter];
+        [_refreshControl addTarget:self action:@selector(isPullingToRefresh:) forControlEvents:UIControlEventValueChanged];
+        [_refreshControl addTarget:self action:@selector(didPullToRefresh::) forControlEvents:UIControlEventTouchDragExit];
         [_scrollView addSubview:_refreshControl];
     }
 }
@@ -1146,12 +1150,23 @@
     }
 }
 
-- (void)didPullToRefresh:(UIRefreshControl *)refreshControl
+- (void)isPullingToRefresh:(UIRefreshControl *)refreshControl
 {
     
     [_delegate swipeViewHandleRefresh:self];
 }
 
+- (void)willPullToRefresh:(UIRefreshControl *)refreshControl
+{
+    
+    [_delegate swipeViewWillBeginRefreshing:self];
+}
+
+- (void)didPullToRefresh:(UIRefreshControl *)refreshControl
+{
+    
+    [_delegate swipeViewDidEndRefreshing:self];
+}
 
 #pragma mark -
 #pragma mark UIScrollViewDelegate methods
