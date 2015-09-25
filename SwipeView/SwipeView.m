@@ -301,8 +301,10 @@
     {
         _pullToRefresh = pullToRefresh;
         
-        _refreshControl = [[UIRefreshControl alloc] init];
-        _refreshControl.tintColor = [UIColor grayColor];
+        if(!_refreshControl){
+            _refreshControl = [[UIRefreshControl alloc] init];
+            _refreshControl.tintColor = [UIColor grayColor];
+        }
         [_refreshControl addTarget:self action:@selector(didPullToRefresh:) forControlEvents:UIControlEventValueChanged];
         [_scrollView addSubview:_refreshControl];
     }
