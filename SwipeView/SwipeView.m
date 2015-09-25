@@ -105,7 +105,6 @@
     _truncateFinalPage = NO;
     _defersItemViewLoading = NO;
     _vertical = NO;
-    _pullToRefresh = NO;
     
     _scrollView = [[UIScrollView alloc] init];
     _scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
@@ -136,6 +135,8 @@
     [_scrollView addGestureRecognizer:tapGesture];
     
     self.clipsToBounds = YES;
+
+    _refreshControl = nil;
     
     //place scrollview at bottom of hierarchy
     [self insertSubview:_scrollView atIndex:0];
@@ -295,18 +296,19 @@
     }
 }
 
-- (void)setPullToRefresh:(BOOL)pullToRefresh
+- (void)setRefreshControl:(UIRefreshControl*)refreshControl
 {
-    if (_pullToRefresh != pullToRefresh)
+    if (refreshControl)
     {
-        _pullToRefresh = pullToRefresh;
-        
-        if(!_refreshControl){
-            _refreshControl = [[UIRefreshControl alloc] init];
-            _refreshControl.tintColor = [UIColor grayColor];
-        }
+        _refreshControl = refreshControl;
         [_refreshControl addTarget:self action:@selector(didPullToRefresh:) forControlEvents:UIControlEventValueChanged];
         [_scrollView addSubview:_refreshControl];
+    } else {
+        _refreshControl = nil;
+        [_refreshControl removeTarget:nil 
+                   action:NULL 
+         forControlEvents:UIControlEventAllEvents]; 
+        [_scrollView removeSubview:_refreshControl]
     }
 }
 
