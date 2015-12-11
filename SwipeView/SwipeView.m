@@ -308,7 +308,7 @@
         [_refreshControl removeTarget:nil 
                    action:NULL 
          forControlEvents:UIControlEventAllEvents]; 
-        [_scrollView removeSubview:_refreshControl]
+        [_refreshControl removeFromSuperview];
     }
 }
 
